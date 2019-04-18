@@ -1,11 +1,9 @@
 set terminal png
-set output 'wakedist16.png'
+set output 'wakedist.png'
 set grid
 set autoscale
-unset key
-set grid
 set xrange [*:*] reverse
-set title "Wake Distribution @ 16\260"
+set title "Wake Distributions"
 set xlabel "Coefficient of Pressure"
 set ylabel "Position (m)"
-plot 'WakeDist16.dat' using 1:2 with lines
+plot 'WakeDist04.dat' u 1:2 w l t "4\260", 'WakeDist08.dat' u 1:2 w l t "8\260", 'WakeDist12.dat' u 1:2 w l t "12\260", 'WakeDist16.dat' u 1:2 w l t "16\260"

@@ -564,10 +564,6 @@ int main(int argc, char **argv){
 
   }
 
-  const double PRESSURE = 96500.0;
-  const double TEMPERATURE = 23.0;
-  double density = PRESSURE / (278 * TEMPERATURE);
-
   struct data xVal;
   struct data yVal;
   matrixList(files, numFiles, "\t", 1, 2, &xVal);
@@ -582,15 +578,14 @@ int main(int argc, char **argv){
   int factors[6] = {2, 3, 5, 5, 3, 2};
   smoothData(tke, factors, 6, xVal.rows, xVal.columns);
   
-  writeTKEFile("TKE16.dat", tke, xVal.columns, xVal.rows);
+  writeTKEFile("TKE04.dat", tke, xVal.columns, xVal.rows);
   free(tke);
 
   double* wake = wakeDistribution(&xVal, (int)(xVal.columns / 3), vInf);
-  writeWakeDistr("WakeDist16.dat", wake, xVal.rows, xVal.dy);
+  writeWakeDistr("WakeDist04.dat", wake, xVal.rows, xVal.dy);
   free(wake);
 
   system("gnuplot heatPlot.gp");
-  system("gnuplot wakeDist.gp");
 
   return 0;
 
