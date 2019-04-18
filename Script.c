@@ -385,7 +385,7 @@ double** turbulenceKineticEnergy(struct data* X, struct data* Y, int velInf, int
 
     for(j = 0; j < X->columns; j++){
 
-      tke[i][j] = ((pow(X->vel[set][i][i] - U[i][j], 2)) - (pow(Y->vel[set][i][j] - V[i][j] , 2))) / (2 * pow(velInf, 2));
+      tke[i][j] = ((pow(X->vel[set][i][i] - U[i][j], 2)) + (pow(Y->vel[set][i][j] - V[i][j] , 2))) / (2 * pow(velInf, 2));
 
     }
 
@@ -578,11 +578,11 @@ int main(int argc, char **argv){
   int factors[6] = {2, 3, 5, 5, 3, 2};
   smoothData(tke, factors, 6, xVal.rows, xVal.columns);
   
-  writeTKEFile("TKE04.dat", tke, xVal.columns, xVal.rows);
+  writeTKEFile("TKE16.dat", tke, xVal.columns, xVal.rows);
   free(tke);
 
   double* wake = wakeDistribution(&xVal, (int)(xVal.columns / 3), vInf);
-  writeWakeDistr("WakeDist04.dat", wake, xVal.rows, xVal.dy);
+  writeWakeDistr("WakeDist16.dat", wake, xVal.rows, xVal.dy);
   free(wake);
 
   system("gnuplot heatPlot.gp");
