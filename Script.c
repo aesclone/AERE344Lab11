@@ -403,7 +403,9 @@ void writeTKEFile(char* name, double** tke, int n, int m){
 
     for(j = 0; j < n; j++){
 
-      fprintf(file, "%f ", tke[i][j]);
+      if(tke[i][j] > 1){ fprintf(file, "0.0 ");
+
+      }else{ fprintf(file, "%lf ", tke[i][j]); }
 
     }
 
@@ -463,10 +465,9 @@ void smoothData(double** set, int* factors, int size, int rows, int columns){
 
       for(k = 0; k < columns; k++){
 
-
 	if(j > factors[i] && j < rows - factors[i] && k > factors[i] && k < columns - factors[i]){
 
-	  if(fabs(set[j][k]) > fabs(1000 * temp[j][k])){
+	  if(fabs(set[j][k]) > fabs(2 * temp[j][k])){
 
 	    avg = 0;
 	    count = 0;
@@ -477,7 +478,7 @@ void smoothData(double** set, int* factors, int size, int rows, int columns){
 
 		if(!(l == j && m == k)){
 
-		  avg = avg + temp[l][m];
+		  avg = avg + set[l][m];
 		  count++;
 
 		}
@@ -485,6 +486,8 @@ void smoothData(double** set, int* factors, int size, int rows, int columns){
 	      }
 
 	    }
+
+	    printf("old: %lf, new: %lf\n", set[j][k], avg / count);
 
 	    set[j][k] = avg / count;
 
@@ -517,7 +520,7 @@ double* wakeDistribution(struct data* set, int loc, double vInf){
 
     }
 
-    wake[i] = avg / count;
+    wake[i] = pow(avg / count, 2) / pow(vInf, 2);
 
   }
 
@@ -576,7 +579,6 @@ int main(int argc, char **argv){
   double** tke = turbulenceKineticEnergy(&xVal, &yVal, vInf, 0);
 
   int factors[6] = {2, 3, 5, 5, 3, 2};
-  smoothData(tke, factors, 6, xVal.rows, xVal.columns);
   
   writeTKEFile("TKE16.dat", tke, xVal.columns, xVal.rows);
   free(tke);

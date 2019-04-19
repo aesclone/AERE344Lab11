@@ -2,7 +2,6 @@ set terminal png
 set output 'wakedist.png'
 set grid
 set autoscale
-set xrange [*:*] reverse
 set title "Wake Distributions"
 set xlabel "Coefficient of Pressure"
 set ylabel "Position (m)"
